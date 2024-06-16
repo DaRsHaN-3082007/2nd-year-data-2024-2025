@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigonometric Value Converter and Differentiation Formulas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label, select, input, button {
+            display: block;
+            width: calc(100% - 20px);
+            margin: 10px auto;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .error {
+            color: red;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        canvas {
+            max-width: 800px;
+            margin: 20px 0;
+            display: none; /* Initially hide the canvas */
+        }
+        #differentiation-table {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+        #differentiation-table th, #differentiation-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        #differentiation-table th {
+            background-color: #f2f2f2;
+        }
+        #differentiation-table tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Trigonometric Value Converter</h2>
+        <label for="trigValue">Enter Value (in degrees):</label>
+        <input type="number" id="trigValue" step="any">
+        
+        <label for="trigFunction">Select Function:</label>
+        <select id="trigFunction">
+            <option value="sin">sin</option>
+            <option value="cos">cos</option>
+            <option value="tan">tan</option>
+            <option value="sec">sec</option>
+            <option value="csc">csc</option>
+            <option value="cot">cot</option>
+        </select>
+        
+        <button onclick="convertTrigValue()">Convert</button>
+        
+        <div class="result" id="result"></div>
+    </div>
+    
+    <div class="container">
+        <h2>Principal Value Branches of Trigonometric Functions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Function</th>
+                    <th>Principal Value Range</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>sin(x)</td>
+                    <td>-1 ≤ sin(x) ≤ 1</td>
+                </tr>
+                <tr>
+                    <td>cos(x)</td>
+                    <td>-1 ≤ cos(x) ≤ 1</td>
+                </tr>
+                <tr>
+                    <td>tan(x)</td>
+                    <td>-∞ < tan(x) < ∞</td>
+                </tr>
+                <tr>
+                    <td>sec(x)</td>
+                    <td>sec(x) ≤ -1 or sec(x) ≥ 1</td>
+                </tr>
+                <tr>
+                    <td>csc(x)</td>
+                    <td>csc(x) ≤ -1 or csc(x) ≥ 1</td>
+                </tr>
+                <tr>
+                    <td>cot(x)</td>
+                    <td>-∞ < cot(x) < ∞</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button onclick="toggleGraph()">Show/Hide Graph</button>
+
+    <canvas id="trigChart" width="800" height="400"></canvas>
+
+    <table id="differentiation-table">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Function</th>
+                <th>Derivative</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>f(x) = C</td>
+                <td>f'<sub>x</sub> = 0</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>f(x) = x<sup>n</sup></td>
+                <td>f'<sub>x</sub> = n * x<sup>n-1</sup></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>f(x) = e<sup>x</sup></td>
+                <td>f'<sub>x</sub> = e<sup>x</sup></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>f(x) = ln(x)</td>
+                <td>f'<sub>x</sub> = 1 / x</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>f(x) = sin(x)</td>
+                <td>f'<sub>x</sub> = cos(x)</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>f(x) = cos(x)</td>
+                <td>f'<sub>x</sub> = -sin(x)</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>f(x) = tan(x)</td>
+                <td>f'<sub>x</sub> = sec<sup>2</sup>(x)</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>f(x) = sec(x)</td>
+                <td>f'<sub>x</sub> = sec(x) * tan(x)</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>f(x) = csc(x)</td>
+                <td>f'<sub>x</sub> = -csc(x) * cot(x)</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>f(x) = cot(x)</td>
+                <td>f'<sub>x</sub> = -csc<sup>2</sup>(x)</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>f(x) = arcsin(x)</td>
+                <td>f'<sub>x</sub> = 1 / sqrt(1 - x<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>f(x) = arccos(x)</td>
+                <td>f'<sub>x</sub> = -1 / sqrt(1 - x<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>f(x) = arctan(x)</td>
+                <td>f'<sub>x</sub> = 1 / (1 + x<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>f(x) = sinh(x)</td>
+                <td>f'<sub>x</sub> = cosh(x)</td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td>f(x) = cosh(x)</td>
+                <td>f'<sub>x</sub> = sinh(x)</td>
+            </tr>
+            <tr>
+                <td>16</td>
+                <td>f(x) = tanh(x)</td>
+                <td>f'<sub>x</sub> = sech<sup>2</sup>(x)</td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td>f(x) = sech(x)</td>
+                <td>f'<sub>x</sub> = -sech(x) * tanh(x)</td>
+            </tr>
+            <tr>
+                <td>18</td>
+                <td>f(x) = csch(x)</td>
+                <td>f'<sub>x</sub> = -csch(x) * coth(x)</td>
+            </tr>
+            <tr>
+                <td>19</td>
+                <td>f(x) = coth(x)</td>
+                <td>f'<sub>x</sub> = -csch<sup>2</sup>(x)</td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td>f(x) = arsinh(x)</td>
+                <td>f'<sub>x</sub> = 1 / sqrt(x<sup>2</sup> + 1)</
+                </td>
+            </tr>
+            <tr>
+                <td>21</td>
+                <td>f(x) = arcosh(x)</td>
+                <td>f'<sub>x</sub> = 1 / sqrt(x<sup>2</sup> - 1)</td>
+            </tr>
+            <tr>
+                <td>22</td>
+                <td>f(x) = artanh(x)</td>
+                <td>f'<sub>x</sub> = 1 / (1 - x<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td>23</td>
+                <td>f(x) = x<sup>a</sup>ln(x)</td>
+                <td>f'<sub>x</sub> = x<sup>a</sup>(a * ln(x) + 1)</td>
+            </tr>
+            <tr>
+                <td>24</td>
+                <td>f(x) = e<sup>ax</sup></td>
+                <td>f'<sub>x</sub> = a * e<sup>ax</sup></td>
+            </tr>
+            <tr>
+                <td>25</td>
+                <td>f(x) = ln(ax)</td>
+                <td>f'<sub>x</sub> = 1 / x</td>
+            </tr>
+            <tr>
+                <td>26</td>
+                <td>f(x) = sin(ax)</td>
+                <td>f'<sub>x</sub> = a * cos(ax)</td>
+            </tr>
+            <tr>
+                <td>27</td>
+                <td>f(x) = cos(ax)</td>
+                <td>f'<sub>x</sub> = -a * sin(ax)</td>
+            </tr>
+            <tr>
+                <td>28</td>
+                <td>f(x) = tan(ax)</td>
+                <td>f'<sub>x</sub> = a * sec<sup>2</sup>(ax)</td>
+            </tr>
+            <tr>
+                <td>29</td>
+                <td>f(x) = sec(ax)</td>
+                <td>f'<sub>x</sub> = a * sec(ax) * tan(ax)</td>
+            </tr>
+            <tr>
+                <td>30</td>
+                <td>f(x) = csc(ax)</td>
+                <td>f'<sub>x</sub> = -a * csc(ax) * cot(ax)</td>
+            </tr>
+        </tbody>
+    </table>
+        
+    
+
+    <script>
+        function toRadians(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+    
+        function toDegrees(radians) {
+            return radians * (180 / Math.PI);
+        }
+    
+        function convertTrigValue() {
+            const value = parseFloat(document.getElementById('trigValue').value);
+            const func = document.getElementById('trigFunction').value;
+            const resultDiv = document.getElementById('result');
+    
+            if (isNaN(value)) {
+                resultDiv.innerHTML = '<p class="error">Please enter a valid number.</p>';
+                return;
+            }
+    
+            let normalizedValue = value % 360;
+            if (normalizedValue < 0) {
+                normalizedValue += 360;
+            }
+    
+            const radValue = toRadians(normalizedValue);
+            let radResult;
+            let degResult;
+    
+            switch (func) {
+                case 'sin':
+                    radResult = Math.sin(radValue);
+                    degResult = Math.sin(toRadians(value));
+                    break;
+                case 'cos':
+                    radResult = Math.cos(radValue);
+                    degResult = Math.cos(toRadians(value));
+                    break;
+                case 'tan':
+                    radResult = Math.tan(radValue);
+                    degResult = Math.tan(toRadians(value));
+                    break;
+                case 'sec':
+                    radResult = 1 / Math.cos(radValue);
+                    degResult = 1 / Math.cos(toRadians(value));
+                    break;
+                case 'csc':
+                    radResult = 1 / Math.sin(radValue);
+                    degResult = 1 / Math.sin(toRadians(value));
+                    break;
+                case 'cot':
+                    radResult = 1 / Math.tan(radValue);
+                    degResult = 1 / Math.tan(toRadians(value));
+                    break;
+            }
+    
+            resultDiv.innerHTML = `
+                <p><strong>Input Value:</strong> ${value} degrees</p>
+                <p><strong>Normalized Value:</strong> ${normalizedValue} degrees</p>
+                <p><strong>Function:</strong> ${func}</p>
+                <p><strong>In Radians:</strong> ${(normalizedValue / 180).toFixed(2)}π</p>
+                <p><strong>Result (in degrees):</strong> ${degResult.toFixed(4)}</p>
+                <p><strong>Result (in radians):</strong> ${radResult.toFixed(4)}</p>
+            `;
+        }
+    
+        function toggleGraph() {
+            var canvas = document.getElementById('trigChart');
+            if (canvas.style.display === 'none') {
+                canvas.style.display = 'block';
+                showGraph();
+            } else {
+                canvas.style.display = 'none';
+            }
+        }
+    
+        function showGraph() {
+            // Generate data for the chart
+            const angles = [];
+            const sinValues = [];
+            const cosValues = [];
+            const tanValues = [];
+            const secValues = [];
+            const cscValues = [];
+            const cotValues = [];
+    
+            for (let i = 0; i <= 360; i += 5) {
+                const rad = toRadians(i);
+                angles.push(i);
+                sinValues.push(Math.sin(rad));
+                cosValues.push(Math.cos(rad));
+                tanValues.push(Math.tan(rad));
+                secValues.push(1 / Math.cos(rad));
+                cscValues.push(1 / Math.sin(rad));
+                cotValues.push(1 / Math.tan(rad));
+            }
+    
+            // Render the chart
+            const ctx = document.getElementById('trigChart').getContext('2d');
+            const trigChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: angles,
+                    datasets: [
+                        {
+                            label: 'sin',
+                            data: sinValues,
+                            borderColor: 'red',
+                            fill: false
+                        },
+                        {
+                            label: 'cos',
+                            data: cosValues,
+                            borderColor: 'blue',
+                            fill: false
+                        },
+                        {
+                            label: 'tan',
+                            data: tanValues,
+                            borderColor: 'green',
+                            fill: false
+                        },
+                        {
+                            label: 'sec',
+                            data: secValues,
+                            borderColor: 'orange',
+                            fill: false
+                        },
+                        {
+                            label: 'csc',
+                            data: cscValues,
+                            borderColor: 'purple',
+                            fill: false
+                        },
+                        {
+                            label: 'cot',
+                            data: cotValues,
+                            borderColor: 'brown',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Angle (degrees)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value'
+                            },
+                            suggestedMin: -5,
+                            suggestedMax: 5
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    
+</body>
+</html>

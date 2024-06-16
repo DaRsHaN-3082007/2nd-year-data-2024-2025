@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preperatory Question Papers</title>
+    <style>
+        /* Reset and Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #3f51b5;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 20px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        /* Section Styles */
+        .subject-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            flex: 1 1 200px;
+            max-width: 300px;
+        }
+
+        .subject-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .subject-section.active {
+            border: 2px solid #3f51b5;
+        }
+
+        .subject-section h2 {
+            margin: 0 0 20px;
+            padding: 10px;
+            background-color: #3f51b5;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 24px;
+            text-transform: capitalize;
+            text-align: center;
+        }
+
+        /* Form Styles */
+        .upload-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .upload-form input[type="file"] {
+            padding: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .upload-form button {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-form button:hover {
+            background-color: #388e3c;
+        }
+
+        /* Papers List Styles */
+        .papers-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .paper-item {
+            border: 2px solid #4caf50;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .paper-item a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .paper-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Button Styles */
+        .rename-btn,
+        .remove-btn {
+            padding: 5px 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .rename-btn:hover,
+        .remove-btn:hover {
+            background-color: #f44336;
+            color: #fff;
+        }
+
+        .remove-btn {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Question Paper of Preperatory</h1>
+</header>
+
+<main>
+    <!-- PHYSICS Section -->
+    <section id="PHYSICS-papers" class="subject-section">
+        <h2>Physics</h2>
+        <form class="upload-form" data-subject="PHYSICS">
+            <input type="file" class="file-input" multiple>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="papers-list"></div>
+    </section>
+
+    <!-- Chemistry Section -->
+    <section id="chemistry-papers" class="subject-section">
+        <h2>Chemistry</h2>
+        <form class="upload-form" data-subject="chemistry">
+            <input type="file" class="file-input" multiple>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="papers-list"></div>
+    </section>
+
+    <!-- Mathematics Section -->
+    <section id="mathematics-papers" class="subject-section">
+        <h2>Mathematics</h2>
+        <form class="upload-form" data-subject="mathematics">
+            <input type="file" class="file-input" multiple>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="papers-list"></div>
+    </section>
+
+    <!-- Computer Science Section -->
+    <section id="computer-science-papers" class="subject-section">
+        <h2>Computer Science</h2>
+        <form class="upload-form" data-subject="computer-science">
+            <input type="file" class="file-input" multiple>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="papers-list"></div>
+    </section>
+
+    <!-- English Section -->
+    <section id="english-papers" class="subject-section">
+        <h2>English</h2>
+        <form class="upload-form" data-subject="english">
+            <input type="file" class="file-input" multiple>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="papers-list"></div>
+    </section>
+
+    <!-- Kannada Section -->
+    <section id="kannada-papers" class="subject-section">
+        <h2>Kannada</h2>
+        <form class="upload-form" data-subject="kannada">
+            <input type="file" class="file-input" multiple>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="papers-list"></div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadForms = document.querySelectorAll('.upload-form');
+
+        function promptFileName(defaultname) {
+            let fileName = defaultname;
+            do {
+                fileName = prompt('Enter file name (leave blank to cancel):', fileName);
+                if (fileName === null) {
+                    return null;
+                }
+                fileName = fileName.trim();
+            } while (fileName === '');
+            return fileName;
+        }
+
+        uploadForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const files = this.querySelector('.file-input').files;
+                const subject = form.getAttribute('data-subject');
+                const papersList = document.querySelector(`#${subject}-papers .papers-list`);
+
+                if (files.length === 0) {
+                    alert('Please select at least one file.');
+                    return;
+                }
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const fileName = promptFileName(file.name);
+                    if (fileName !== null) {
+                        const fileItem = document.createElement('div');
+                        fileItem.classList.add('paper-item');
+                        const renamedFile = new File([file], fileName, { type: file.type });
+                        fileItem.innerHTML = `<a href="${URL.createObjectURL(renamedFile)}" target="_blank">${fileName}</a> <button class="rename-btn">Rename</button> <button class="remove-btn">Remove</button>`;
+                        papersList.appendChild(fileItem);
+                    }
+                }
+
+                localStorage.setItem(`${subject}-papers`, papersList.innerHTML);
+
+                this.reset();
+            });
+        });
+
+        document.querySelectorAll('.papers-list').forEach(papersList => {
+            papersList.addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('rename-btn')) {
+                    const paperItem = target.parentElement;
+                    const fileNameElement = paperItem.querySelector('a');
+                    const newFileName = prompt('Enter new file name:', fileNameElement.textContent);
+                    if (newFileName !== null && newFileName.trim() !== '') {
+                        fileNameElement.textContent = newFileName.trim();
+                        updateLocalStorage();
+                    }
+                } else if (target.classList.contains('remove-btn')) {
+                    const paperItem = target.parentElement;
+                    paperItem.remove();
+                    updateLocalStorage();
+                }
+            });
+        });
+
+        document.querySelectorAll('.subject-section').forEach(section => {
+            section.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // Load saved papers from localStorage on page load
+        loadPapersFromLocalStorage();
+
+        function loadPapersFromLocalStorage() {
+            uploadForms.forEach(form => {
+                const subject = form.getAttribute('data-subject');
+                const papersList = document.querySelector(`#${subject}-papers .papers-list`);
+                const savedPapers = localStorage.getItem(`${subject}-papers`);
+                if (savedPapers) {
+                    papersList.innerHTML = savedPapers;
+                }
+            });
+        }
+
+        function updateLocalStorage() {
+            uploadForms.forEach(form => {
+                const subject = form.getAttribute('data-subject');
+                const papersList = document.querySelector(`#${subject}-papers .papers-list`);
+                localStorage.setItem(`${subject}-papers`, papersList.innerHTML);
+            });
+        }
+    });
+</script>
+</body>
+</html>

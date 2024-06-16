@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Card</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px 0;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(150deg, #6a11cb, #2575fc);
+            color: white;
+            margin: 20px;
+            text-align: center;
+            border-radius: 15px;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            padding-top: 80px;
+        }
+
+        .box-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .box:hover .box-overlay {
+            opacity: 1;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .box-content {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1> Marks Card</h1>
+    </div>
+    <div class="container">
+        <div class="box" id="first-box">
+            <div class="box-content">
+                <h3>First Term</h3>
+                <div class="box-overlay">
+                    <p>Click to view First Term Marks</p>
+                </div>
+            </div>
+        </div>
+        <div class="box" id="second-box">
+            <div class="box-content">
+                <h3>Second Term</h3>
+                <div class="box-overlay">
+                    <p>Click to view Second Term Marks</p>
+                </div>
+            </div>
+        </div>
+        <div class="box" id="third-box">
+            <div class="box-content">
+                <h3>Third Term</h3>
+                <div class="box-overlay">
+                    <p>Click to view Third Term Marks</p>
+                </div>
+            </div>
+        </div>
+        <div class="box" id="preparatory-box">
+            <div class="box-content">
+                <h3>Preparatory</h3>
+                <div class="box-overlay">
+                    <p>Click to view Preparatory Marks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Add click event listeners to boxes
+    const boxes = document.querySelectorAll('.box');
+    const paths = [
+        "file:///G:/Data%20of%20second%20puc/Second%20PUC%20Data/Marks%20card/New%20folder/First%20Term%20Marks%20card.html",
+        "file:///G:/Data%20of%20second%20puc/Second%20PUC%20Data/Marks%20card/New%20folder/Second%20Term%20Marks%20card.html",
+        "file:///G:/Data%20of%20second%20puc/Second%20PUC%20Data/Marks%20card/New%20folder/Third%20Term%20Marks%20card.html",
+        "file:///G:/Data%20of%20second%20puc/Second%20PUC%20Data/Marks%20card/New%20folder/Preperatory%20Marks%20card.html"
+    ];
+
+    boxes.forEach((box, index) => {
+        box.addEventListener('click', function() {
+            window.location.href = paths[index];
+        });
+    });
+</script>
+
+</body>
+</html>

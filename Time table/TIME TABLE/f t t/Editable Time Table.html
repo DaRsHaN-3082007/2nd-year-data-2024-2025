@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Time Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td {
+            background-color: #fdfdfd;
+        }
+        input[type="date"], select {
+            width: calc(50% - 10px);
+            box-sizing: border-box;
+            border: none;
+            background: transparent;
+        }
+        input[type="date"]:focus, select:focus {
+            outline: none;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .revision-date {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .revision-date span {
+            margin: 0 10px;
+        }
+        .highlight {
+            background-color: #ffeb3b !important;
+        }
+        #addRowBtn, #printBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #addRowBtn:hover, #printBtn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editable Time Table</h1>
+    <table id="examTable">
+        <thead>
+            <tr>
+                <th>Sl No</th>
+                <th>Revision Date</th>
+                <th>Exam Date</th>
+                <th>Subject</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Initial table row will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+    <button id="addRowBtn">Add Row</button>
+    <button id="printBtn">Print</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.getElementById('tableBody');
+            const addRowBtn = document.getElementById('addRowBtn');
+            const printBtn = document.getElementById('printBtn');
+            const subjects = ['Physics','Physics CET', 'Chemistry','Chemistry CET', 'Maths',  'Maths CET','Computer', 'Kannada', 'English', 'Holiday'];
+
+            // Function to create a new row
+            const createRow = (index, data = {}) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="revision-date">
+                        <input type="date" class="revision-start-date" value="${data.revisionStartDate || ''}" /> 
+                        <span>to</span> 
+                        <input type="date" class="revision-end-date" value="${data.revisionEndDate || ''}" />
+                    </td>
+                    <td><input type="date" class="exam-date" value="${data.examDate || ''}" /></td>
+                    <td>
+                        <select class="subject">
+                            <option value="">Select Subject</option>
+                            ${subjects.map(subject => `<option value="${subject}" ${data.subject === subject ? 'selected' : ''}>${subject}</option>`).join('')}
+                        </select>
+                    </td>
+                `;
+                if (data.subject === 'Holiday') {
+                    row.classList.add('highlight');
+                }
+
+                // Add event listener for right-click to delete row
+                row.addEventListener('contextmenu', (event) => {
+                    event.preventDefault();
+                    if (confirm('Do you want to delete this row?')) {
+                        row.remove();
+                        updateSerialNumbers();
+                        saveData();
+                    }
+                });
+
+                tableBody.appendChild(row);
+            };
+
+            // Load saved data from localStorage
+            const savedData = JSON.parse(localStorage.getItem('examTableData')) || [];
+            savedData.forEach((data, index) => createRow(index, data));
+
+            // Add initial row if no saved data
+            if (savedData.length === 0) {
+                createRow(0);
+            }
+
+            // Save data to localStorage
+            const saveData = () => {
+                const data = Array.from(tableBody.getElementsByTagName('tr')).map(row => {
+                    const [revisionStartDate, revisionEndDate] = row.querySelectorAll('.revision-date input');
+                    const examDate = row.querySelector('.exam-date');
+                    const subject = row.querySelector('.subject');
+                    return {
+                        revisionStartDate: revisionStartDate.value,
+                        revisionEndDate: revisionEndDate.value,
+                        examDate: examDate.value,
+                        subject: subject.value,
+                    };
+                });
+                localStorage.setItem('examTableData', JSON.stringify(data));
+            };
+
+            // Update serial numbers
+            const updateSerialNumbers = () => {
+                Array.from(tableBody.getElementsByTagName('tr')).forEach((row, index) => {
+                    row.querySelector('td').textContent = index + 1;
+                });
+            };
+
+            // Event listener to add a new row
+            addRowBtn.addEventListener('click', () => {
+                const rowCount = tableBody.getElementsByTagName('tr').length;
+                createRow(rowCount);
+                saveData();
+            });
+
+            // Event listener for input changes to save data and handle row highlight
+            tableBody.addEventListener('input', saveData);
+            tableBody.addEventListener('change', (event) => {
+                if (event.target.classList.contains('subject')) {
+                    const row = event.target.closest('tr');
+                    if (event.target.value === 'Holiday') {
+                        row.classList.add('highlight');
+                    } else {
+                        row.classList.remove('highlight');
+                    }
+                    saveData();
+                }
+            });
+
+            // Event listener for the "Print"
+            printBtn.addEventListener('click', () => {
+                window.location.href = 'file:///G:/Data%20of%20second%20puc/Second%20PUC%20Data/Time%20table/TIME%20TABLE/f%20t%20t/Time%20Table%20First%20Term.html'; // Redirect to the printable timetable page
+            });
+        });
+    </script>
+</body>
+</html>

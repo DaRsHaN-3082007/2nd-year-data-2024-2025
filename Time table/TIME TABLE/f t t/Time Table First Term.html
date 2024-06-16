@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printable Time Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e0f7fa;
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 60px; /* Space for the button */
+            transition: background-color 0.3s;
+        }
+        h1 {
+            text-align: center;
+            color: #006064;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            transition: background-color 0.3s;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #00838f;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        td {
+            background-color: #e0f7fa;
+            transition: background-color 0.3s;
+        }
+        tr:nth-child(even) {
+            background-color: #b2ebf2;
+        }
+        .highlight {
+            background-color: #ffeb3b !important;
+        }
+
+        .revision-date {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .revision-date span {
+            margin: 0 20px; /* Increase the gap */
+        }
+        .center-text {
+            text-align: center;
+        }
+        @media print {
+            body {
+                padding: 0;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 8px;
+                border: 1px solid #ddd;
+            }
+        }
+        #editBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #00838f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #editBtn:hover {
+            background-color: #006064;
+        }
+
+        /* Dark theme styles */
+        body.dark-theme {
+            background-color: #333;
+            color: #f4f4f9;
+        }
+        body.dark-theme h1 {
+            color: #f4f4f9;
+        }
+        body.dark-theme table {
+            background-color: #444;
+        }
+        body.dark-theme th {
+            background-color: #555;
+        }
+        body.dark-theme td {
+            background-color: #666;
+        }
+        body.dark-theme tr:nth-child(even) {
+            background-color: #555;
+        }
+        body.dark-theme tr:hover {
+            background-color: #777;
+        }
+
+        /* Custom context menu */
+        #contextMenu {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            width: 150px;
+            background-color: #00838f;
+            border: 1px solid #616e18ab;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        #contextMenu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #contextMenu li {
+            padding: 10px;
+            cursor: pointer;
+        }
+        #contextMenu li:hover {
+            background-color: #dcf1dab6;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>First Term Exam Time Table</h1>
+    <table id="examTable">
+        <thead>
+            <tr>
+                <th class="center-text">Sl No</th>
+                <th class="center-text">Revision Date</th>
+                <th class="center-text">Exam Date</th>
+                <th class="center-text">Subject</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Table rows will be inserted here -->
+        </tbody>
+    </table>
+    <button id="editBtn">Edit Time Table</button>
+
+    <div id="contextMenu">
+        <ul>
+            <li id="switchTheme">Switch Theme</li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.getElementById('tableBody');
+            const editBtn = document.getElementById('editBtn');
+            const contextMenu = document.getElementById('contextMenu');
+            const switchTheme = document.getElementById('switchTheme');
+
+            // Function to format dates
+            const formatDate = (dateString) => {
+                const date = new Date(dateString);
+                const day = date.toLocaleDateString('en-us', { weekday: 'long' });
+                const dayOfMonth = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+                const year = date.getFullYear();
+                return `${dayOfMonth}/${month}/${year} "${day}"`;
+            };
+
+            // Function to create a new row
+            const createRow = (index, data = {}) => {
+                const revisionStartDateFormatted = data.revisionStartDate ? formatDate(data.revisionStartDate) : '';
+                const revisionEndDateFormatted = data.revisionEndDate ? formatDate(data.revisionEndDate) : '';
+                const examDateFormatted = data.examDate ? formatDate(data.examDate) : '';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="center-text">${index + 1}</td>
+                    <td class="center-text revision-date">${revisionStartDateFormatted} <span>To</span> ${revisionEndDateFormatted}</td>
+                    <td class="center-text">${examDateFormatted}</td>
+                    <td class="center-text">${data.subject}</td>
+                `;
+                if (data.subject === 'Holiday') {
+                    row.classList.add('highlight');
+                }
+                tableBody.appendChild(row);
+            };
+
+            // Load saved data from localStorage
+            const savedData = JSON.parse(localStorage.getItem('examTableData')) || [];
+            savedData.forEach((data, index) => createRow(index, data));
+
+            // Add initial row if no saved data
+            if (savedData.length === 0) {
+                createRow(0);
+            }
+
+            // Event listener for the "Edit Time Table" button
+            editBtn.addEventListener('click', () => {
+                window.location.href = 'file:///G:/Data%20of%20second%20puc/Second%20PUC%20Data/Time%20table/TIME%20TABLE/f%20t%20t/Editable%20Time%20Table.html';
+            });
+
+            // Function to show custom context menu
+            const showContextMenu = (event) => {
+                event.preventDefault();
+                contextMenu.style.display = 'block';
+                contextMenu.style.left = `${event.pageX}px`;
+                contextMenu.style.top = `${event.pageY}px`;
+            };
+
+            // Event listener to switch theme
+            switchTheme.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                contextMenu.style.display = 'none';
+            });
+
+            // Hide context menu on click outside
+            document.addEventListener('click', (event) => {
+                if (!contextMenu.contains(event.target)) {
+                    contextMenu.style.display = 'none';
+                }
+            });
+
+            // Prevent context menu from hiding on right-click inside the context menu
+            contextMenu.addEventListener('contextmenu', (event) => {
+                event.preventDefault();
+            });
+
+            // Add event listener for right-click to show custom context menu
+            document.addEventListener('contextmenu', (event) => {
+                showContextMenu(event);
+            });
+        });
+    </script>
+</body>
+</html>

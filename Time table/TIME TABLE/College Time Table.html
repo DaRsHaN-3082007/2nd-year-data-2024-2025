@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Timetable</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #000000;
+            background-color: #ffffff;
+            padding: 20px 0;
+            border-radius: 6px;
+            margin-top: 0;
+            
+        }
+        h4 {
+            color: #a85d4c;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: .5px solid #000000;
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background-color: #5a5a5a;
+            color: #e2d9d9;
+            font-weight: bold;
+        }
+        td {
+            background-color: #ece3e3;
+            color: #181717;
+            font-weight: 500;
+        }
+        
+        
+        .time-column {
+            background-color: #5a5a5a;
+            color: #e2d9d9;
+            font-weight: bold;
+        }
+        .time {
+                background-color: #324eaaa1;
+                color:#000000
+            }
+        .lunch {
+            background-color: #36ad93;
+            color: #eb8b53;
+            font-weight: bold;
+         
+        }
+        .b-1 {
+            background-color: #aca3a0;
+            color: #422424;
+            font-weight: bold;
+}
+.highlight {
+            color: #38274b; /* Adjust highlight color as needed */
+            border: 2px solid #333; /* Add border style */
+        }
+    </style>
+</head>
+<body>
+    <h1>Timetable</h1>
+    <table id="timetable">
+    <table>
+        <tr>
+            <th class="time">Date/Time</th>
+            <th>8:30 AM - 9:30 AM</th>
+            <th>9:30 AM - 10:30 AM</th>
+            <th>10:30 AM - 11:30 AM</th>
+            <th>11:30 AM - 12:00 PM</th>
+            <th>12:00 PM - 1:00 PM</th>
+            <th>1:00 PM - 3:30 PM</th>
+            <th>1:00 PM - 3:30 PM</th>
+        </tr>
+        <tr>
+            <td class="time-column">Monday</td>
+            <td>Computer-Science</td>
+            <td>Kannada</td>
+            <td>English/Maths</td>
+            <td class="lunch" colspan="">L</td>
+            <td>Chemistry</td>
+            <td class="b-1">B-1 English</td>
+            <td>B-2 English</td>
+        </tr>
+        <tr>
+            <td class="time-column">Tuesday</td>
+            <td>Kannada</td>
+            <td>Maths</td>
+            <td>Computer-Science</td>
+            <td class="lunch" colspan="">U</td>
+            <td>Physics</td>
+            <td class="b-1">B-1 Maths</td>
+            <td>B-2 Chemistry</td>
+        </tr>
+        <tr>
+            <td class="time-column">Wednesday</td>
+            <td>Physics</td>
+            <td>Maths</td>
+            <td>Kannada</td>
+            <td class="lunch" colspan="">N</td>
+            <td>Chemistry</td>
+            <td class="b-1">B-1 Kannada</td>
+            <td>B-2 Kannada</td>
+        </tr>
+        <tr>
+            <td class="time-column">Thursday</td>
+            <td>Physics</td>
+            <td>Computer-Science</td>
+            <td>Chemistry</td>
+            <td class="lunch" colspan="">C</td>
+            <td>Maths</td>
+            <td class="b-1">B-1 Physics</td>
+            <td>B-2 Computer-Science</td>
+        </tr>
+        <tr>
+            <td class="time-column">Friday</td>
+            <td>Physics</td>
+            <td>Maths</td>
+            <td>English</td>
+            <td class="lunch" colspan="">H</td>
+            <td>Computer-Science</td>
+            <td class="b-1">B-1 Computer-Science</td>
+            <td>B-2 Maths</td>
+        </tr>
+        <tr>
+            <th class="time">--> Time For Saturday</td>
+            <td class="time-column">8:30 AM - 9:30 AM</td>
+            <td class="time-column">9:30 AM - 10:30 AM</td>
+            <td class="time-column">10:30 AM-11:00 AM</td>
+            <td class="time-column">11:30 AM-1:00 PM</td>
+            <td class="time-column">11:30 AM-1:00 PM</td>
+        </tr>
+        <tr>
+            <td class="time-column">Saturday</td>
+            <td>Chemistry</td>
+            <td>English</td>
+            <td class="lunch" colspan="">SNACKS</td>
+            <td class="b-1">B-1 Chemistry</td>
+            <td>B-2 Physics</td>
+        </tr>
+        
+    </table>
+
+    <script>
+        // Get the current day (Sunday = 0, Monday = 1, ..., Saturday = 6)
+        var today = new Date().getDay();
+        console.log("Today is:", today); 
+    
+        // Highlight the corresponding row
+        var tableRows = document.getElementById("timetable").getElementsByTagName("tr");
+        console.log("Table rows:", tableRows);
+        if (tableRows[today]) {
+            console.log("Highlighting row:", today);
+            tableRows[today].classList.add("highlight");
+        } else {
+            console.log("No row found for today:", today);
+        }
+    </script>
+    
+
+</body>
+</html>
